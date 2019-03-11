@@ -23,88 +23,60 @@ namespace Lab1
     /// </summary>
     public partial class MainWindow : Window
     {
-        private DataTable dt;
         private string filename;
-        DataGrid MyDataGrid;
+
+        ObservableCollection<Person> people = new ObservableCollection<Person>
+        {
+            new Person {Name = "Bartosz", Age = 3, Image = @"C:\Users\pati\Documents\zdjecia\bartus.jpg"}
+        };
+
+        public ObservableCollection<Person> PersonItems
+        {
+            get => people;
+        }
 
         public MainWindow()
         {
             InitializeComponent();
-
-            MyDataGrid = new DataGrid();
-            MyDataGrid.AutoGenerateColumns = false;
-            
-            DataGridTextColumn col1 = new DataGridTextColumn();
-            col1.Header = "Name";
-            col1.Binding = new Binding("Name");
-            col1.Width = 70;
-            MyDataGrid.Columns.Add(col1);
-
-            DataGridTextColumn col2 = new DataGridTextColumn();
-            col2.Header = "Age";
-            col2.Binding = new Binding("Age");
-            col2.Width = 70;
-            MyDataGrid.Columns.Add(col2);
-
-            DataGridTemplateColumn col3 = (DataGridTemplateColumn)FindResource("image");
-            MyDataGrid.Columns.Add(col3);
-
-            dt = new DataTable();
-            dt.Columns.Add("Name", typeof(string));
-            dt.Columns.Add("Age", typeof(int));
-            dt.Columns.Add("Image", typeof(BitmapImage));
-
-            MyDataGrid.AddHandler(MouseDoubleClickEvent, new RoutedEventHandler(CopyCell_Click));
-
-            MyDataGrid.ItemsSource = dt.DefaultView;
-            BackgroundGrid.Children.Add(MyDataGrid);
+            DataContext = this;
         }
 
-        private void clear()
+        private void Clear()
         {
             NameTxB.Clear();
             AgeTxB.Clear();
             filename = null;
             Image.Source = null;
         }
-
-        private void CopyCell_Click(object sender, RoutedEventArgs e)
+        private void listViewItems_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DataRowView itemSource = MyDataGrid.CurrentItem as DataRowView;
-            NameTxB.Text = itemSource.Row.ItemArray[0].ToString();
-            AgeTxB.Text = itemSource.Row.ItemArray[1].ToString();     
-        }
+            Person selectedRow = (Person)MyListView.SelectedItem;
 
-        private void Row_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            Image img = sender as Image;
-
-            if (img != null)
+            if (selectedRow != null)
             {
-                Image.Source = img.Source;
+                NameTxB.Text = selectedRow.Name;
+                AgeTxB.Text = selectedRow.Age.ToString();
+                filename = selectedRow.Image;
+                Uri uri = new Uri(filename);
+                BitmapImage bmp = new BitmapImage(uri);
+                Image.Source = bmp;
             }
+            
         }
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             if (!String.IsNullOrEmpty(NameTxB.Text) &&
                 !String.IsNullOrEmpty(AgeTxB.Text) &&
-                Image.Source != null)
+                !String.IsNullOrEmpty(filename))
             {
-                Uri uri = new Uri(filename);
-                BitmapImage bmp = new BitmapImage(uri);
-
-                DataRow dr = dt.NewRow();
-                dr[0] = NameTxB.Text;
-                dr[1] = int.Parse(AgeTxB.Text);
-                dr[2] = bmp;
-                dt.Rows.Add(dr);
-
-                clear();
+                people.Add(new Person { Age = int.Parse(AgeTxB.Text), Name = NameTxB.Text, Image = filename });
             }
+            Clear(); 
         }
 
         private void SelectButton_Click(object sender, RoutedEventArgs e)
         {
+            Clear();
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.FileName = "Document"; // Default file name
             fileDialog.DefaultExt = ".jpg"; // Default file extension
@@ -116,7 +88,6 @@ namespace Lab1
             {
                 // Open document
                 filename = fileDialog.FileName;
-
                 Image.Source = new BitmapImage(new Uri(filename));
             }
             else

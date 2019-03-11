@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 
 namespace Lab1
 {
@@ -10,6 +11,6 @@ namespace Lab1
     {
         public string Name { get; set; }
         public int Age { get; set; }
-        public string Filename { get; set; }
+        public string Image { get; set; }
     }
 }
