@@ -1,0 +1,2 @@
+link do api online weather map: https://www.apixu.com
+http://json2csharp.com/#

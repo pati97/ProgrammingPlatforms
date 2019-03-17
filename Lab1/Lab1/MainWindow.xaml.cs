@@ -70,8 +70,8 @@ namespace Lab1
                 !String.IsNullOrEmpty(filename))
             {
                 people.Add(new Person { Age = int.Parse(AgeTxB.Text), Name = NameTxB.Text, Image = filename });
+                Clear(); 
             }
-            Clear(); 
         }
 
         private void SelectButton_Click(object sender, RoutedEventArgs e)
@@ -80,7 +80,7 @@ namespace Lab1
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.FileName = "Document"; // Default file name
             fileDialog.DefaultExt = ".jpg"; // Default file extension
-            fileDialog.Filter = "Text documents (.jpg)|*.jpg"; // Filter files by extension
+            fileDialog.Filter = "Images (.jpg)|*.jpg"; // Filter files by extension
 
             Nullable<bool> result = fileDialog.ShowDialog();
 
