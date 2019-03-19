@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Lab01
+namespace Lab1
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -45,7 +45,7 @@ namespace Lab01
                     textBlock.Text = text;
                 });
             }
-            catch { } 
+            catch { }
         }
 
         class WaitingAnimation
@@ -53,7 +53,7 @@ namespace Lab01
             private int maxNumberOfDots;
             private int currentDots;
             private MainWindow sender;
-            
+
 
             public WaitingAnimation(int maxNumberOfDots, MainWindow sender)
             {
@@ -65,7 +65,7 @@ namespace Lab01
             public void CheckStatus(Object stateInfo)
             {
                 sender.UpdateProgressBlock(
-                    "Processing" + 
+                    "Processing" +
                     new Func<string>(() => {
                         StringBuilder strBuilder = new StringBuilder(string.Empty);
                         for (int i = 0; i < currentDots; i++)
@@ -80,15 +80,12 @@ namespace Lab01
             }
         }
 
-        ObservableCollection<Person> people = new ObservableCollection<Person>
-        {
-            new Person { Name = "P1", Age = 1 },
-            new Person { Name = "P2", Age = 2 }
-        };
 
-        public ObservableCollection<Person> Items
+        ObservableCollection<Weather> weather = new ObservableCollection<Weather>{};
+
+        public ObservableCollection<Weather> WeatherItems
         {
-            get => people;
+            get => weather;
         }
 
         public MainWindow()
@@ -96,47 +93,53 @@ namespace Lab01
             InitializeComponent();
             DataContext = this;
         }
-        
-        private void AddNewPersonButton_Click(object sender, RoutedEventArgs e)
-        {
-            people.Add(new Person { Age = int.Parse(ageTextBox.Text), Name = nameTextBox.Text });
-        }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
+        private void Clear()
         {
+            CityTxB.Clear();  
+        }
+ 
+        private async void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            var rootObject = await Weather.GetWeather(CityTxB.Text);
             try
             {
-                int finalNumber = int.Parse(this.finalNumberTextBox.Text);
+                int finalNumber = 25;
                 var getResultTask = GetNumberAsync(finalNumber);
-                var waitingAnimationTask = 
+                var waitingAnimationTask =
                     new System.Threading.Timer(
-                        new WaitingAnimation(10, this).CheckStatus, 
-                        null, 
-                        TimeSpan.FromMilliseconds(0), 
+                        new WaitingAnimation(5, this).CheckStatus,
+                        null,
+                        TimeSpan.FromMilliseconds(0),
                         TimeSpan.FromMilliseconds(500)
                     );
-                var waitingAnimationTask2 = new System.Timers.Timer(100);
-                waitingAnimationTask2.Elapsed += 
-                    (innerSender, innerE) => {
-                        this.UpdateProgressBlock(
-                            innerE.SignalTime.ToLongTimeString(),
-                            this.progressTextBlock2);
-                    };
-                waitingAnimationTask2.Disposed +=
-                    (innerSender, innerE) => {
-                            this.progressTextBlock2.Text = "Koniec świata";
-                    };
-                waitingAnimationTask2.Start();
                 int result = await getResultTask;
                 waitingAnimationTask.Dispose();
-                waitingAnimationTask2.Dispose();
-                this.progressTextBlock.Text = "Obtained result: " + result;
+            }
+            catch (Exception ex)
+            {
+                this.progressTextBlock.Text = "Error! " + ex.Message;
+            }
+
+            try
+            {
+                weather.Add(new Weather
+                {
+                    City = rootObject.location.name,
+                    Temperature = rootObject.current.temp_c,
+                    Description = rootObject.current.condition.text,
+                    Humidity = rootObject.current.humidity,
+                    Cloud = rootObject.current.cloud,
+                    Wind = rootObject.current.wind_kph
+                });
             }
             catch(Exception ex)
             {
                 this.progressTextBlock.Text = "Error! " + ex.Message;
             }
-            
+
+            this.progressTextBlock2.Text = "Added " + CityTxB.Text + ".";
+            this.progressTextBlock.Text = String.Empty;
         }
     }
 }

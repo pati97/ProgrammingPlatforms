@@ -136,7 +136,7 @@ namespace HttpClientWeather
         public async static Task<RootObject> GetLondonWeather()
         {
             var http = new HttpClient();
-            var url = String.Format("http://api.apixu.com/v1/current.json?key=78ae3fdd414d4f168ed130602191703&q=Wroclaw");
+            var url = String.Format("http://api.apixu.com/v1/current.json?key=78ae3fdd414d4f168ed130602191703&q=London");
             var respone = await http.GetAsync(url);
             var result = await respone.Content.ReadAsStringAsync();
             var serializer = new DataContractJsonSerializer(typeof(RootObject));
