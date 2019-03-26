@@ -17,7 +17,7 @@ namespace Lab1
             {
                 City = string.Empty,
                 Temperature = double.NaN,
-                Cloud = int.MaxValue,
+                Pressure = int.MaxValue,
                 Humidity = int.MaxValue,
                 Description = string.Empty,
                 Wind = double.NaN,
@@ -30,21 +30,18 @@ namespace Lab1
                     case XmlNodeType.Element:
                         switch (reader.Name)
                         {
-                            case "city":
-                                //result.City = reader.GetAttribute("name");
-                                break;
                             case "name":
                                 result.City = reader.ReadElementContentAsString();
                                 break;
                             case "temp_c":
                                 result.Temperature =
-                                    int.Parse(
+                                    double.Parse(
                                         reader.ReadElementContentAsString(),
                                        System.Globalization.CultureInfo.InvariantCulture);
                                 break;
-                            case "cloud":
-                                result.Cloud =
-                                    int.Parse(
+                            case "pressure_mb":
+                                result.Pressure =
+                                    double.Parse(
                                         reader.ReadElementContentAsString(),
                                         System.Globalization.CultureInfo.InvariantCulture);
                                break;
@@ -54,7 +51,7 @@ namespace Lab1
                             
                             case "humidity":
                                 result.Humidity =
-                                    int.Parse(
+                                    double.Parse(
                                         reader.ReadElementContentAsString(),
                                         System.Globalization.CultureInfo.InvariantCulture);
                                 break;

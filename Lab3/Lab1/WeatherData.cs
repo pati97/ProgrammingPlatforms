@@ -14,7 +14,7 @@ namespace Lab1
         public string City { get; set; }
         public double Temperature { get; set; }
         public string Description { get; set; }
-        public double Cloud { get; set; }
+        public double Pressure { get; set; }
         public double Wind { get; set; }
         public double Humidity { get; set; }
 

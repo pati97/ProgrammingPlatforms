@@ -19,7 +19,7 @@
                     <GridViewColumn Width="70" Header="Temperature" DisplayMemberBinding="{Binding Temperature}" />
                     <GridViewColumn Width="70" Header="Description" DisplayMemberBinding="{Binding Description}" />
                     <GridViewColumn Width="35" Header="Wind" DisplayMemberBinding="{Binding Wind}" />
-                    <GridViewColumn Width="40" Header="Cloud" DisplayMemberBinding="{Binding Cloud}" />
+                    <GridViewColumn Width="40" Header="Pressure" DisplayMemberBinding="{Binding Pressure}" />
                     <GridViewColumn Width="60" Header="Humidity" DisplayMemberBinding="{Binding Humidity}" />
                 </GridView>
             </ListView.View>
@@ -34,10 +34,11 @@
             <StackPanel Orientation="Horizontal" Height="30" Margin="2, 2, 2, 2"/>
 
             <StackPanel Orientation="Horizontal" Height="40" Margin="2, 2, 2, 2">
-                <Button x:Name="AddButton" Content="Add Weather Data" VerticalAlignment="Center" Background="{x:Null}" HorizontalAlignment="Center" Margin="80,0,0,0" Height="30" Width="110" FontSize="18" Click="LoadWeatherData"/>
+                <Button x:Name="AddListCityButton" Content="Add List City" VerticalAlignment="Stretch" Background="{x:Null}" HorizontalAlignment="Left" Margin="0,5,0,5" Height="30" Width="125" FontSize="16" Click="LoadListCityData"/>
+                <Button x:Name="AddButton" Content="Add Weather Data" VerticalAlignment="Stretch" Background="{x:Null}" HorizontalAlignment="Right" Margin="5,5,0,5" Height="30" Width="140" FontSize="16" Click="LoadWeatherData"/>
             </StackPanel>
-            <TextBlock x:Name="progressTextBlock" TextWrapping="Wrap" Text="" Height="30"/>
-            <TextBlock x:Name="progressTextBlock2" TextWrapping="Wrap" Text="" Height="30"/>
+            <ProgressBar x:Name="ProgressBar" Height="30"/>
+            <TextBlock x:Name="ProgressTextBlock" TextWrapping="Wrap" Text="" Height="30"/>
         </StackPanel>
     </Grid>
 </Window>
