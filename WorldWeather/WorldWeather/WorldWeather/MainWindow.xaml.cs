@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WorldWeather.Entity_Data_Model;
 
 namespace WorldWeather
 {
@@ -22,6 +24,7 @@ namespace WorldWeather
     /// </summary>
     public partial class MainWindow : Window
     {
+        WeatherDatabaseEntities db = new WeatherDatabaseEntities();
         ObservableCollection<Weather> currentWeather = new ObservableCollection<Weather> { };
         
         public ObservableCollection<Weather> currentWeatherItems
@@ -33,14 +36,6 @@ namespace WorldWeather
         {
             InitializeComponent();
             DataContext = this;
-
-            //db.Weather.Local.Add(new Weather()
-            //{
-            //    City = "xd",
-            //    ID = 1
-            //});
-            
-            //db.SaveChanges();
         }
 
         private async void LoadWeatherData(object sender, RoutedEventArgs e)
@@ -60,6 +55,23 @@ namespace WorldWeather
                     IconID = result.IconID
                 });
 
+            }
+
+            var newWeather = new WeatherDetails()
+            {
+                IdWeather = 1,
+                City = "Wroclaw"
+            };
+
+            db.WeatherDetails.Local.Add(newWeather);
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                db.WeatherDetails.Local.Remove(newWeather);
+                Debug.WriteLine("Error, id is not unique!");
             }
         }
     }
