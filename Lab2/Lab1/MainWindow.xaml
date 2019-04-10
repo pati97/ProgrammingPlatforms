@@ -10,7 +10,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="139*"/>
             <ColumnDefinition Width="135*"/>
-            <ColumnDefinition Width="274*"/>
+            <ColumnDefinition Width="274"/>
         </Grid.ColumnDefinitions>
         <ListView Margin="1,-162,1,-163" Name="MyListView" ItemsSource="{Binding WeatherItems}" Background="#FFECE6E6" Grid.ColumnSpan="2"  >
             <ListView.View>

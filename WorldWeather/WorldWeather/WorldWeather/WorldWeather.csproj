@@ -79,26 +79,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Entity Data Model\WeatherDetails.cs">
-      <DependentUpon>WeatherModel.tt</DependentUpon>
+    <Compile Include="Migrations\201904101902159_InitialCreate.cs" />
+    <Compile Include="Migrations\201904101902159_InitialCreate.Designer.cs">
+      <DependentUpon>201904101902159_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Entity Data Model\WeatherModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WeatherModel.Context.tt</DependentUpon>
+    <Compile Include="Migrations\201904101914120_test.cs" />
+    <Compile Include="Migrations\201904101914120_test.Designer.cs">
+      <DependentUpon>201904101914120_test.cs</DependentUpon>
     </Compile>
-    <Compile Include="Entity Data Model\WeatherModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WeatherModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Entity Data Model\WeatherModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WeatherModel.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ParserWeatherXML.cs" />
     <Compile Include="WeatherConnection.cs" />
+    <Compile Include="WeatherDbContext.cs" />
     <Compile Include="WeatherIconConverter.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -128,17 +120,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Migrations\201904101902159_InitialCreate.resx">
+      <DependentUpon>201904101902159_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904101914120_test.resx">
+      <DependentUpon>201904101914120_test.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="Entity Data Model\WeatherModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>WeatherModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="Entity Data Model\WeatherModel.edmx.diagram">
-      <DependentUpon>WeatherModel.edmx</DependentUpon>
-    </None>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -185,25 +176,6 @@
     <Resource Include="WeatherIcons\snow.png" />
     <Resource Include="WeatherIcons\thunderstorm.png" />
     <Resource Include="WeatherIcons\windy.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Entity Data Model\WeatherModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>WeatherModel.edmx</DependentUpon>
-      <LastGenOutput>WeatherModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Entity Data Model\WeatherModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>WeatherModel.edmx</DependentUpon>
-      <LastGenOutput>WeatherModel.cs</LastGenOutput>
-    </Content>
-    <Content Include="WeatherDatabase.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="WeatherDatabase_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>WeatherDatabase.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

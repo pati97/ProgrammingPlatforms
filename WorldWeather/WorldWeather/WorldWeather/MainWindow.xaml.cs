@@ -15,7 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WorldWeather.Entity_Data_Model;
 
 namespace WorldWeather
 {
@@ -24,7 +23,7 @@ namespace WorldWeather
     /// </summary>
     public partial class MainWindow : Window
     {
-        WeatherDatabaseEntities db = new WeatherDatabaseEntities();
+        WeatherDbContext db = new WeatherDbContext();
         ObservableCollection<Weather> currentWeather = new ObservableCollection<Weather> { };
         
         public ObservableCollection<Weather> currentWeatherItems
@@ -51,28 +50,18 @@ namespace WorldWeather
                 {
                     City = result.City,
                     Temperature = result.Temperature,
-                    ID = result.ID,
-                    IconID = result.IconID
                 });
-
             }
 
-            var newWeather = new WeatherDetails()
+            db.Weathers.Add(new Weather()
             {
-                IdWeather = 1,
-                City = "Wroclaw"
-            };
+                ID = 1,
+                City = result.City,
+                IconID = "cos",
+                Temperature = result.Temperature
+            });
 
-            db.WeatherDetails.Local.Add(newWeather);
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                db.WeatherDetails.Local.Remove(newWeather);
-                Debug.WriteLine("Error, id is not unique!");
-            }
+            db.SaveChanges();
         }
     }
 }

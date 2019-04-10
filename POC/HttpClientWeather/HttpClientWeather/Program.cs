@@ -150,6 +150,7 @@ namespace HttpClientWeather
 
     class Program
     {
+
         public async static void Index()
         {
             var weather = await WeatherProxy.GetLondonWeather();
