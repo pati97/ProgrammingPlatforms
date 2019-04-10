@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,13 +45,22 @@ namespace WorldWeather
 
         private async void LoadWeatherData(object sender, RoutedEventArgs e)
         {
-            var rootObject = await Weather.GetCurrentWeatherAsync(nameTextBox.Text);
+            string xmlResponse = await WeatherConnection.LoadWeatherAsync(nameTextBox.Text);
+            Weather result;
 
-            currentWeather.Add(new Weather
+            using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xmlResponse)))
             {
-                City = rootObject.location.name,
-                Temperature = rootObject.current.temp_c
-            });
+                result = ParseWeatherXML.Parse(stream);
+
+                currentWeatherItems.Add(new Weather()
+                {
+                    City = result.City,
+                    Temperature = result.Temperature,
+                    ID = result.ID,
+                    IconID = result.IconID
+                });
+
+            }
         }
     }
 }

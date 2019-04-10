@@ -6,6 +6,10 @@
         xmlns:local="clr-namespace:WorldWeather"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <local:WeatherIconConverter x:Key="WeatherIconConverter"/>
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -22,6 +26,16 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <StackPanel Grid.Column="1" Margin="20" Orientation="Vertical">
+            <StackPanel Grid.Column="1" Margin="10" Orientation="Vertical">
+                <Image x:Name="WeatherImage" Margin="5,5,4.667,5" Height="187">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource WeatherIconConverter}" Mode="OneWay">
+                            <Binding Path="Weather.ID"  />
+                            <Binding Path="Weather.IconID" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+            </StackPanel>
             <TextBlock TextWrapping="Wrap" Text="City"/>
             <TextBox Name ="nameTextBox" Height="23" TextWrapping="Wrap" Margin="0,0,0,10"/>
             <Button x:Name="currentWeatherDataButton" Content="Load the weather" Click="LoadWeatherData"/>
