@@ -21,9 +21,9 @@ namespace WorldWeather
     /// </summary>
     public partial class MainWindow : Window
     {
-        ObservableCollection<CurrentWeather> currentWeather = new ObservableCollection<CurrentWeather> { };
-
-        public ObservableCollection<CurrentWeather> currentWeatherItems
+        ObservableCollection<Weather> currentWeather = new ObservableCollection<Weather> { };
+        
+        public ObservableCollection<Weather> currentWeatherItems
         {
             get => currentWeather;
         }
@@ -32,13 +32,21 @@ namespace WorldWeather
         {
             InitializeComponent();
             DataContext = this;
+
+            //db.Weather.Local.Add(new Weather()
+            //{
+            //    City = "xd",
+            //    ID = 1
+            //});
+            
+            //db.SaveChanges();
         }
 
         private async void LoadWeatherData(object sender, RoutedEventArgs e)
         {
-            var rootObject = await CurrentWeather.GetCurrentWeatherAsync(nameTextBox.Text);
+            var rootObject = await Weather.GetCurrentWeatherAsync(nameTextBox.Text);
 
-            currentWeather.Add(new CurrentWeather
+            currentWeather.Add(new Weather
             {
                 City = rootObject.location.name,
                 Temperature = rootObject.current.temp_c
