@@ -33,13 +33,40 @@ namespace WorldWeather
                                 result.City = xmlReader.GetAttribute("name");
                                 break;
                             case "temperature":
+                                result.MaxTemperature = double.Parse(xmlReader.GetAttribute("max"),
+                                    System.Globalization.CultureInfo.InvariantCulture);
+                                result.MinTemperature = double.Parse(xmlReader.GetAttribute("min"),
+                                    System.Globalization.CultureInfo.InvariantCulture);
                                 result.Temperature = double.Parse(xmlReader.GetAttribute("value"),
                                     System.Globalization.CultureInfo.InvariantCulture);
+                                break;
+                            case "humidity":
+                                result.Humidity = int.Parse(xmlReader.GetAttribute("value"),
+                                    System.Globalization.CultureInfo.InvariantCulture);
+                                break;
+                            case "pressure":
+                                result.Pressure = int.Parse(xmlReader.GetAttribute("value"),
+                                    System.Globalization.CultureInfo.InvariantCulture);
+                                break;
+                            case "speed":
+                                result.WindType = xmlReader.GetAttribute("name");
+                                result.WindSpeed = double.Parse(xmlReader.GetAttribute("value"),
+                                    System.Globalization.CultureInfo.InvariantCulture);
+                                break;
+                            case "direction":
+                                result.WindDirection = xmlReader.GetAttribute("name");
+                                break;
+                            case "clouds":
+                                result.Clouds = xmlReader.GetAttribute("name");
                                 break;
                             case "weather":
                                 result.ID = int.Parse(xmlReader.GetAttribute("number"),
                                     System.Globalization.CultureInfo.InvariantCulture);
                                 result.IconID = xmlReader.GetAttribute("icon");
+                                break;
+                            case "lastupdate":
+                                result.LastUpdate = DateTime.Parse(xmlReader.GetAttribute("value"),
+                                    System.Globalization.CultureInfo.InvariantCulture);
                                 break;
                         }
                         break;

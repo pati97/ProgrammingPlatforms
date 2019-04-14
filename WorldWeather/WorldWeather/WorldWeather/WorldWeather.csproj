@@ -79,15 +79,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Migrations\201904101902159_InitialCreate.cs" />
-    <Compile Include="Migrations\201904101902159_InitialCreate.Designer.cs">
-      <DependentUpon>201904101902159_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904101914120_test.cs" />
-    <Compile Include="Migrations\201904101914120_test.Designer.cs">
-      <DependentUpon>201904101914120_test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ParserWeatherXML.cs" />
     <Compile Include="WeatherConnection.cs" />
     <Compile Include="WeatherDbContext.cs" />
@@ -120,12 +111,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201904101902159_InitialCreate.resx">
-      <DependentUpon>201904101902159_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904101914120_test.resx">
-      <DependentUpon>201904101914120_test.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
