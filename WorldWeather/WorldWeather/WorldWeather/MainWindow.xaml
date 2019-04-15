@@ -9,7 +9,7 @@
     <Window.Resources>
         <local:WeatherIconConverter x:Key="WeatherIconConverter"/>
     </Window.Resources>
-    <Grid>
+    <Grid Background="#FF545461">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -25,19 +25,19 @@
                 </DataTemplate>
             </DataGrid.ItemTemplate>
         </DataGrid>
-        <StackPanel Grid.Column="1" Margin="20" Orientation="Vertical">
+        <StackPanel Grid.Column="1" Margin="10" Orientation="Vertical" Background="#FF837676">
             <StackPanel Grid.Column="1" Margin="10" Orientation="Vertical">
-                <Image x:Name="WeatherImage" Margin="54,5,35.667,5" Stretch="Fill" Height="125" Source="WeatherIcons/atmosphere.png" ></Image>
+                <Image x:Name="WeatherImage" Margin="84,5,76.667,5" Stretch="Fill" Height="130" Source="WeatherIcons/atmosphere.png" Width="150" />
             </StackPanel>
 
-            <TextBlock TextWrapping="Wrap" Text="City"/>
+            <TextBlock TextWrapping="Wrap" Text="City" FontWeight="Bold" Margin="5,0,0 0" Height="20"/>
             <TextBox Name ="nameTextBox" Height="23" TextWrapping="Wrap" Margin="0,0,0,10"/>
-            <TextBlock TextWrapping="Wrap" Text="ID"/>
+            <TextBlock TextWrapping="Wrap" Text="ID" FontWeight="Bold" Margin="5,0,0 0" Height="20"/>
             <TextBox Name ="IdTextBox" Height="23" TextWrapping="Wrap" Margin="0,0,0,10"/>
-            <TextBlock TextWrapping="Wrap" Text="Temperature"/>
+            <TextBlock TextWrapping="Wrap" Text="Temperature" FontWeight="Bold" Margin="5,0,0 0" Height="20"/>
             <TextBox Name ="TemperatureTextBox" Height="23" TextWrapping="Wrap" Margin="0,0,0,10"/>
-            <Button x:Name="currentWeatherDataButton" Content="Load the weather" Click="LoadWeatherData" Margin="0,0,-0.333,0"/>
-            <Button x:Name="addWeatherDataButton" Content="Add the weather" Click="AddWeatherData" Margin="0,10,-0.333,0"/>
+            <Button x:Name="currentWeatherDataButton" Content="Load the weather" Click="LoadWeatherData" Margin="0,0,-0.333,0" Background="#FFE02B2B" FontWeight="Bold"/>
+            <Button x:Name="addWeatherDataButton" Content="Add the weather" Click="AddWeatherData" Margin="0,10,-0.333,0" Background="#FF187612" FontWeight="Bold"/>
 
         </StackPanel>
     </Grid>

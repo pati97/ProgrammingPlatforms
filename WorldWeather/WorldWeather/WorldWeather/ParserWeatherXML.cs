@@ -33,12 +33,12 @@ namespace WorldWeather
                                 result.City = xmlReader.GetAttribute("name");
                                 break;
                             case "temperature":
-                                result.MaxTemperature = double.Parse(xmlReader.GetAttribute("max"),
-                                    System.Globalization.CultureInfo.InvariantCulture);
-                                result.MinTemperature = double.Parse(xmlReader.GetAttribute("min"),
-                                    System.Globalization.CultureInfo.InvariantCulture);
-                                result.Temperature = double.Parse(xmlReader.GetAttribute("value"),
-                                    System.Globalization.CultureInfo.InvariantCulture);
+                                result.MaxTemperature = Convert.ToInt32(double.Parse(xmlReader.GetAttribute("max"),
+                                    System.Globalization.CultureInfo.InvariantCulture) - 273.15);
+                                result.MinTemperature = Convert.ToInt32(double.Parse(xmlReader.GetAttribute("min"),
+                                    System.Globalization.CultureInfo.InvariantCulture) - 273.15);
+                                result.Temperature = Convert.ToInt32(double.Parse(xmlReader.GetAttribute("value"),
+                                    System.Globalization.CultureInfo.InvariantCulture) - 273.15);
                                 break;
                             case "humidity":
                                 result.Humidity = int.Parse(xmlReader.GetAttribute("value"),

@@ -146,6 +146,8 @@ namespace WorldWeather
         {
             this.AddCity(nameTextBox.Text);
             grid.ItemsSource = db.Weathers.ToList();
+            Thread.Sleep(1000);
+            Clear();
         }
 
         private void AddWeatherData(object sender, RoutedEventArgs e)
@@ -166,11 +168,13 @@ namespace WorldWeather
             {
                 db.SaveChanges();
                 grid.ItemsSource = db.Weathers.ToList();
+                
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+            Clear();
         }
 
         private void DataGrid_Loaded(object sender, RoutedEventArgs e)
@@ -204,7 +208,12 @@ namespace WorldWeather
                     var task = Task.Run(async () => await GetCityWeather(item.City));
 
                     //MessageBox.Show("Wroclaw City temp = " + task.Result.Temperature.ToString());
-                    item.Temperature += task.Result.Temperature;
+                    item.Temperature = task.Result.Temperature;
+                    item.Clouds = task.Result.Clouds;
+                    item.Humidity = task.Result.Humidity;
+                    item.LastUpdate = task.Result.LastUpdate;
+                    item.Pressure = task.Result.Pressure;
+
                     task.Wait();
                 }
                 grid.Items.Refresh();
@@ -218,8 +227,16 @@ namespace WorldWeather
         {
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
+            dispatcherTimer.Interval = new TimeSpan(0, 1, 0);
             dispatcherTimer.Start();
-        }       
+        }
+        
+
+        private void Clear()
+        {
+            nameTextBox.Text = string.Empty;
+            IdTextBox.Text = string.Empty;
+            TemperatureTextBox.Text = string.Empty;
+        }
     }
 }
