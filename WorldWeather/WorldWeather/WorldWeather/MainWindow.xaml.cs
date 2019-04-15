@@ -44,9 +44,10 @@ namespace WorldWeather
         {
             InitializeComponent();
             DataContext = this;
-            WeatherImage.DataContext = this;
+            //grid.ItemsSource = db.Weathers.ToList();
+            
             this.AddCity("Wroclaw");
-
+            grid.ItemsSource = db.Weathers.ToList();
         }
 
         protected void OnPropertyChanged(string name)
@@ -67,11 +68,11 @@ namespace WorldWeather
                 weatherId = result.WeatherId;
                 iconId = result.IconID;
                 db.Weathers.Add(result);
-                currentWeatherItems.Add(result);
-
+                currentWeatherItems.Add(result); 
                 try
                 {
                     db.SaveChanges();
+                    grid.ItemsSource = db.Weathers.ToList();
                 }
                 catch (Exception ex)
                 {
@@ -87,12 +88,16 @@ namespace WorldWeather
             else
             {
                 var id = (int)(weatherId);
-
-                //if (iconID == null) return Binding.DoNothing;
-
-                //var timePeriod = iconID.ToCharArray()[2]; // This is either d or n (day or night)
+                char timePeriod = char.MinValue;
+      
                 var pack = "pack://application:,,,/WorldWeather;component/WeatherIcons/";
-                var timePeriod = 'd';
+                if (iconId.Contains('d'))
+                {
+                    timePeriod = 'd';
+                }
+                else if(iconId.Contains('n'))
+                    timePeriod = 'n';
+                
                 var img = string.Empty;
 
                 if (id >= 200 && id < 300) img = "thunderstorm.png";
@@ -140,6 +145,7 @@ namespace WorldWeather
         private void LoadWeatherData(object sender, RoutedEventArgs e)
         {
             this.AddCity(nameTextBox.Text);
+            grid.ItemsSource = db.Weathers.ToList();
         }
 
         private void AddWeatherData(object sender, RoutedEventArgs e)
@@ -159,6 +165,7 @@ namespace WorldWeather
             try
             {
                 db.SaveChanges();
+                grid.ItemsSource = db.Weathers.ToList();
             }
             catch (Exception ex)
             {
@@ -187,31 +194,22 @@ namespace WorldWeather
         //Get data and bind to the grid
         private void RebindData()
         {
-            var WroclawCity = from val in db.Weathers
-                              where val.City == "Wroclaw"
-                              select val;
-
+            var WroclawCity = from row in db.Weathers
+                              select row;
+            
             if (WroclawCity.Any())
             {
-                //var CurrentWroclawCity = GetCityWeather("Wroclaw").Result;
-                //foreach (var item in WroclawCity)
-                //{
-                //   Weather weather = Dispatcher.BeginInvoke(DispatcherPriority.Background, new ParameterizedThreadStart(Load));
-                //}
-                //WroclawCity.First().Temperature = CurrentWroclawCity.Result.Temperature;
-                //WroclawCity.First().MinTemperature = CurrentWroclawCity.Result.MinTemperature;
-                //WroclawCity.First().MaxTemperature = CurrentWroclawCity.Result.MaxTemperature;
-                //WroclawCity.First().Pressure = CurrentWroclawCity.Result.Pressure;
-                //WroclawCity.First().Humidity= CurrentWroclawCity.Result.Humidity;
-                //WroclawCity.First().Clouds = CurrentWroclawCity.Result.Clouds;
-                //WroclawCity.First().LastUpdate = CurrentWroclawCity.Result.LastUpdate;
-                //WroclawCity.First().WindSpeed = CurrentWroclawCity.Result.WindSpeed;
-                //WroclawCity.First().WindType = CurrentWroclawCity.Result.WindType;
-                //WroclawCity.First().WindDirection = CurrentWroclawCity.Result.WindDirection;
+                foreach (var item in WroclawCity)
+                {
+                    var task = Task.Run(async () => await GetCityWeather(item.City));
 
+                    //MessageBox.Show("Wroclaw City temp = " + task.Result.Temperature.ToString());
+                    item.Temperature += task.Result.Temperature;
+                    task.Wait();
+                }
                 grid.Items.Refresh();
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Weather.Temperature)));
                 db.SaveChanges();
+                
             }
         }
 
@@ -222,8 +220,6 @@ namespace WorldWeather
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 5);
             dispatcherTimer.Start();
-        }
-
-        
+        }       
     }
 }
