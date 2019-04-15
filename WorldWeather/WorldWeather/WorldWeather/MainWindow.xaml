@@ -9,7 +9,6 @@
     <Window.Resources>
         <local:WeatherIconConverter x:Key="WeatherIconConverter"/>
     </Window.Resources>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -28,15 +27,9 @@
         </DataGrid>
         <StackPanel Grid.Column="1" Margin="20" Orientation="Vertical">
             <StackPanel Grid.Column="1" Margin="10" Orientation="Vertical">
-                <Image x:Name="WeatherImage" Margin="54,5,35.667,5" Height="125">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource WeatherIconConverter}" Mode="OneWay">
-                            <Binding Path="Weather.ID"  />
-                            <Binding Path="Weather.IconID" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
+                <Image x:Name="WeatherImage" Margin="54,5,35.667,5" Stretch="Fill" Height="125" Source="WeatherIcons/atmosphere.png" ></Image>
             </StackPanel>
+
             <TextBlock TextWrapping="Wrap" Text="City"/>
             <TextBox Name ="nameTextBox" Height="23" TextWrapping="Wrap" Margin="0,0,0,10"/>
             <TextBlock TextWrapping="Wrap" Text="ID"/>

@@ -10,25 +10,24 @@ using System.Windows.Media.Imaging;
 
 namespace WorldWeather
 {
-    public class WeatherIconConverter : IMultiValueConverter
+    public class WeatherIconConverter : IValueConverter
     {
-        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values[0] == DependencyProperty.UnsetValue && values[1] == DependencyProperty.UnsetValue)
+            if (value.GetType() != typeof(string))
             {
-                return Binding.DoNothing;
+                return null;
             }
 
             else
             {
-                var id = (int)(values[0]);
-                var iconID = (string)values[1];
+                var id = (int)(value);
+                
+                //if (iconID == null) return Binding.DoNothing;
 
-                if (iconID == null) return Binding.DoNothing;
-
-                var timePeriod = iconID.ToCharArray()[2]; // This is either d or n (day or night)
+                //var timePeriod = iconID.ToCharArray()[2]; // This is either d or n (day or night)
                 var pack = "pack://application:,,,/WorldWeather;component/WeatherIcons/";
-
+                var timePeriod = 'd';
                 var img = string.Empty;
 
                 if (id >= 200 && id < 300) img = "thunderstorm.png";
@@ -57,9 +56,9 @@ namespace WorldWeather
                 return bmp;
             }
         }
-        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetTypes, object parameter, CultureInfo culture)
         {
-            return (object[])Binding.DoNothing;
+            return Binding.DoNothing;
         }
 
     }

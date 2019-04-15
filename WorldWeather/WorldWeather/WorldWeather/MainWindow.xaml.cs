@@ -31,7 +31,8 @@ namespace WorldWeather
         WeatherDbContext db = new WeatherDbContext();
         ObservableCollection<Weather> currentWeather = new ObservableCollection<Weather> { };
         DispatcherTimer dispatcherTimer = new DispatcherTimer();
-
+        int? weatherId;
+        string iconId;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<Weather> currentWeatherItems
@@ -43,20 +44,17 @@ namespace WorldWeather
         {
             InitializeComponent();
             DataContext = this;
-            
-            foreach (var value in db.Weathers)
-            {
-                db.Weathers.Remove(value);
-            }
-            db.SaveChanges();
-
+            WeatherImage.DataContext = this;
             this.AddCity("Wroclaw");
-            
+
         }
 
-        
-        
-        
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+
         public async void AddCity(string city)
         {
             string xmlResponse = await WeatherConnection.LoadWeatherAsync(city);
@@ -66,17 +64,62 @@ namespace WorldWeather
             using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(xmlResponse)))
             {
                 result = ParseWeatherXML.Parse(stream);
-
+                weatherId = result.WeatherId;
+                iconId = result.IconID;
                 db.Weathers.Add(result);
                 currentWeatherItems.Add(result);
+
                 try
                 {
                     db.SaveChanges();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     throw ex;
                 }
+            }
+            if (!weatherId.HasValue)
+            {
+
+                Uri url = new Uri("pack://application:,,,/WorldWeather;component/WeatherIcons/atmosphere.png");
+                WeatherImage.Source = new BitmapImage(url);
+            }
+            else
+            {
+                var id = (int)(weatherId);
+
+                //if (iconID == null) return Binding.DoNothing;
+
+                //var timePeriod = iconID.ToCharArray()[2]; // This is either d or n (day or night)
+                var pack = "pack://application:,,,/WorldWeather;component/WeatherIcons/";
+                var timePeriod = 'd';
+                var img = string.Empty;
+
+                if (id >= 200 && id < 300) img = "thunderstorm.png";
+                else if (id >= 300 && id < 500) img = "drizzle.png";
+                else if (id >= 500 && id < 600) img = "rain.png";
+                else if (id >= 600 && id < 700) img = "snow.png";
+                else if (id >= 700 && id < 800) img = "atmosphere.png";
+                else if (id == 800) img = (timePeriod == 'd') ? "clear_day.png" : "clear_night.png";
+                else if (id == 801) img = (timePeriod == 'd') ? "few_clouds_day.png" : "few_clouds_night.png";
+                else if (id == 802 || id == 803) img = (timePeriod == 'd') ? "broken_clouds_day.png" : "broken_clouds_night.png";
+                else if (id == 804) img = "overcast_clouds.png";
+                else if (id >= 900 && id < 903) img = "extreme.png";
+                else if (id == 903) img = "cold.png";
+                else if (id == 904) img = "hot.png";
+                else if (id == 905 || id >= 951) img = "windy.png";
+                else if (id == 906) img = "hail.png";
+
+                Uri source = new Uri(pack + img);
+
+                BitmapImage bmp = new BitmapImage();
+                bmp.BeginInit();
+                bmp.UriSource = source;
+                bmp.CacheOption = BitmapCacheOption.OnLoad;
+                bmp.EndInit();
+
+
+                WeatherImage.Source = bmp;
             }
         }
 
@@ -150,11 +193,11 @@ namespace WorldWeather
 
             if (WroclawCity.Any())
             {
-                var CurrentWroclawCity = GetCityWeather("Wroclaw").Result;
-                foreach (var item in WroclawCity)
-                {
-                    Weather weather = Dispatcher.BeginInvoke(DispatcherPriority.Background, new ParameterizedThreadStart(Load));
-                }
+                //var CurrentWroclawCity = GetCityWeather("Wroclaw").Result;
+                //foreach (var item in WroclawCity)
+                //{
+                //   Weather weather = Dispatcher.BeginInvoke(DispatcherPriority.Background, new ParameterizedThreadStart(Load));
+                //}
                 //WroclawCity.First().Temperature = CurrentWroclawCity.Result.Temperature;
                 //WroclawCity.First().MinTemperature = CurrentWroclawCity.Result.MinTemperature;
                 //WroclawCity.First().MaxTemperature = CurrentWroclawCity.Result.MaxTemperature;
@@ -167,7 +210,7 @@ namespace WorldWeather
                 //WroclawCity.First().WindDirection = CurrentWroclawCity.Result.WindDirection;
 
                 grid.Items.Refresh();
-                //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Weather.Temperature)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Weather.Temperature)));
                 db.SaveChanges();
             }
         }

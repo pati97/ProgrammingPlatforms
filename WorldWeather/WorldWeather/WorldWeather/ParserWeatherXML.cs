@@ -60,7 +60,7 @@ namespace WorldWeather
                                 result.Clouds = xmlReader.GetAttribute("name");
                                 break;
                             case "weather":
-                                result.ID = int.Parse(xmlReader.GetAttribute("number"),
+                                result.WeatherId = int.Parse(xmlReader.GetAttribute("number"),
                                     System.Globalization.CultureInfo.InvariantCulture);
                                 result.IconID = xmlReader.GetAttribute("icon");
                                 break;
