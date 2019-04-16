@@ -90,9 +90,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ParserWeatherXML.cs" />
+    <Compile Include="TemperatureRangeRules.cs" />
     <Compile Include="WeatherConnection.cs" />
     <Compile Include="WeatherDbContext.cs" />
-    <Compile Include="WeatherIconConverter.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -171,6 +171,9 @@
     <Resource Include="WeatherIcons\snow.png" />
     <Resource Include="WeatherIcons\thunderstorm.png" />
     <Resource Include="WeatherIcons\windy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="CorrectXmlRepsoneFromApi.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

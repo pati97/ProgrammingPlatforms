@@ -4,7 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Schema;
 
 namespace WorldWeather
 {
@@ -16,11 +19,37 @@ namespace WorldWeather
 
             Weather result = new Weather()
             {
-                City = string.Empty,
-                Temperature = double.NaN,
                 ID = int.MaxValue,
-                IconID = string.Empty
+                City = string.Empty,
+                MinTemperature = double.NaN,
+                MaxTemperature = double.NaN,
+                Temperature = double.NaN,
+                Humidity = int.MaxValue,
+                Pressure = int.MaxValue,
+                WindSpeed = double.NaN,
+                WindType = string.Empty,
+                WindDirection = string.Empty,
+                Clouds = string.Empty,
+                WeatherId = int.MaxValue,
+                IconID = string.Empty,
+                LastUpdate = DateTime.MaxValue
             };
+
+            try
+            {
+                var path = new Uri(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().CodeBase)).LocalPath;
+                XmlSchemaSet schema = new XmlSchemaSet();
+                schema.Add("", path + "\\XmlScheme.xsd");
+                XmlReader rd = XmlReader.Create(stream);
+                XDocument doc = XDocument.Load(rd);
+
+                ValidationEventHandler eventHandler = new ValidationEventHandler(ValidationEventHandler);
+                doc.Validate(schema, eventHandler);
+            }
+            catch (Exception ex)
+            {
+
+            }
 
             while (xmlReader.Read())
             {
@@ -74,6 +103,19 @@ namespace WorldWeather
             }
 
             return result;
+        }
+
+        static void ValidationEventHandler(object sender, ValidationEventArgs e)
+        {
+            switch (e.Severity)
+            {
+                case XmlSeverityType.Error:
+                    MessageBox.Show("Error: {0}", e.Message);
+                    break;
+                case XmlSeverityType.Warning:
+                    MessageBox.Show("Warning {0}", e.Message);
+                    break;
+            }
         }
     }
 }

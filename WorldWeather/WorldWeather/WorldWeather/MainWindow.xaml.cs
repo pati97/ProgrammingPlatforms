@@ -44,10 +44,10 @@ namespace WorldWeather
         {
             InitializeComponent();
             DataContext = this;
-            //grid.ItemsSource = db.Weathers.ToList();
             
             this.AddCity("Wroclaw");
             grid.ItemsSource = db.Weathers.ToList();
+            grid.CellEditEnding += GridCellEditEnding;
         }
 
         protected void OnPropertyChanged(string name)
@@ -55,6 +55,20 @@ namespace WorldWeather
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        void GridCellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.EditAction == DataGridEditAction.Commit)
+            {
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
+        }
 
         public async void AddCity(string city)
         {
@@ -128,7 +142,7 @@ namespace WorldWeather
             }
         }
 
-        private async Task<Weather> GetCityWeather(string city)
+        public async Task<Weather> GetCityWeather(string city)
         {
             string xmlResponse = await WeatherConnection.LoadWeatherAsync(city);
 
@@ -168,11 +182,9 @@ namespace WorldWeather
             {
                 db.SaveChanges();
                 grid.ItemsSource = db.Weathers.ToList();
-                
             }
             catch (Exception ex)
             {
-                throw ex;
             }
             Clear();
         }
@@ -207,18 +219,28 @@ namespace WorldWeather
                 {
                     var task = Task.Run(async () => await GetCityWeather(item.City));
 
-                    //MessageBox.Show("Wroclaw City temp = " + task.Result.Temperature.ToString());
                     item.Temperature = task.Result.Temperature;
+                    item.MaxTemperature = task.Result.MaxTemperature;
+                    item.MinTemperature = task.Result.MinTemperature;
                     item.Clouds = task.Result.Clouds;
                     item.Humidity = task.Result.Humidity;
                     item.LastUpdate = task.Result.LastUpdate;
                     item.Pressure = task.Result.Pressure;
 
+                    if (grid.BeginEdit() == false)
+                        grid.Items.Refresh();
+
                     task.Wait();
                 }
-                grid.Items.Refresh();
-                db.SaveChanges();
-                
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
+                   
+                }
             }
         }
 
@@ -227,10 +249,9 @@ namespace WorldWeather
         {
             DispatcherTimer dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 1, 0);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 20);
             dispatcherTimer.Start();
         }
-        
 
         private void Clear()
         {

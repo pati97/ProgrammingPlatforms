@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="current">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="city">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="coord">
+                <xs:complexType>
+                  <xs:attribute name="lon" type="xs:decimal" use="required" />
+                  <xs:attribute name="lat" type="xs:decimal" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="country" type="xs:string" />
+              <xs:element name="sun">
+                <xs:complexType>
+                  <xs:attribute name="rise" type="xs:dateTime" use="required" />
+                  <xs:attribute name="set" type="xs:dateTime" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:unsignedInt" use="required" />
+            <xs:attribute name="name" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="temperature">
+          <xs:complexType>
+            <xs:attribute name="value" type="xs:decimal" use="required" />
+            <xs:attribute name="min" type="xs:decimal" use="required" />
+            <xs:attribute name="max" type="xs:decimal" use="required" />
+            <xs:attribute name="unit" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="humidity">
+          <xs:complexType>
+            <xs:attribute name="value" type="xs:unsignedByte" use="required" />
+            <xs:attribute name="unit" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="pressure">
+          <xs:complexType>
+            <xs:attribute name="value" type="xs:unsignedShort" use="required" />
+            <xs:attribute name="unit" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="wind">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="speed">
+                <xs:complexType>
+                  <xs:attribute name="value" type="xs:decimal" use="required" />
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="gusts" />
+              <xs:element name="direction">
+                <xs:complexType>
+                  <xs:attribute name="value" type="xs:unsignedByte" use="required" />
+                  <xs:attribute name="code" type="xs:string" use="required" />
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="clouds">
+          <xs:complexType>
+            <xs:attribute name="value" type="xs:unsignedByte" use="required" />
+            <xs:attribute name="name" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="visibility">
+          <xs:complexType>
+            <xs:attribute name="value" type="xs:unsignedShort" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="precipitation">
+          <xs:complexType>
+            <xs:attribute name="mode" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="weather">
+          <xs:complexType>
+            <xs:attribute name="number" type="xs:unsignedShort" use="required" />
+            <xs:attribute name="value" type="xs:string" use="required" />
+            <xs:attribute name="icon" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="lastupdate">
+          <xs:complexType>
+            <xs:attribute name="value" type="xs:dateTime" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

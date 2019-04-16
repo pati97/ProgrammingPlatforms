@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<current>
+  <city id="3081368" name="Wroclaw">
+    <coord lon="17.03" lat="51.1"/>
+    <country>PL</country>
+    <sun rise="2019-04-16T03:55:31" set="2019-04-16T17:47:36"/>
+  </city>
+  <temperature value="287.15" min="287.15" max="287.15" unit="kelvin"/>
+  <humidity value="24" unit="%"/>
+  <pressure value="1023" unit="hPa"/>
+  <wind>
+    <speed value="4.6" name="Gentle Breeze"/>
+    <gusts/>
+    <direction value="80" code="E" name="East"/>
+  </wind>
+  <clouds value="0" name="clear sky"/>
+  <visibility value="10000"/>
+  <precipitation mode="no"/>
+  <weather number="800" value="clear sky" icon="01d"/>
+  <lastupdate value="2019-04-16T16:30:00"/>
+</current>

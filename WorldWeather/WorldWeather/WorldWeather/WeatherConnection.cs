@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WorldWeather
 {
@@ -15,6 +17,12 @@ namespace WorldWeather
 
         public async static Task<string> LoadWeatherAsync(string city)
         {
+            if (CheckForInternetConnection() == false)
+            {
+                MessageBox.Show("Cannot connect with internet !");
+                Application.Current.Shutdown();
+            }
+
             string apiCall = apiBaseUrl + "?q=" + city + "&mode=xml" + "&apikey=" + apiKey;
   
             Task<string> result;
@@ -25,6 +33,22 @@ namespace WorldWeather
                 result = content.ReadAsStringAsync();
             }
             return await result;
+        }
+
+        private static bool CheckForInternetConnection()
+        {
+            try
+            {
+                using (var mobileClient = new WebClient())
+                using (var webConnection = mobileClient.OpenRead("http://www.google.com"))
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
